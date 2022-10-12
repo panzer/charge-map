@@ -1,11 +1,14 @@
-### Charger Map Challenge
+## Charger Map Challenge
 
-## Developer Set-up
+In this repository, I set out to use the openchargemap.org API to show chargers on a map and allow the user to "start charging" on one.
 
+### Developer Set-up
+
+1. Install node and npm
 1. `npm install`
-1.
+1. `npm start`
 
-## Design Choices
+### Design Choices
 
 - Using expo's default app for ease of set up
 - Added Redux for ease of state management
@@ -14,9 +17,9 @@
 - Storing the displayed locations in a flat list, since that was the fasted to get something on the screen. Would like to change this (see below)
 - Hard coded in the API key because that was fastest
 - Hard limit on the number of locations pulled from the query because trying not to overburden the device
--
+- Refresh map (call API again) when map movement stops so that we aren't calling it too fast
 
-## TODOs
+### TODOs
 
 - Use some data structure (like an R-Tree: https://github.com/mourner/rbush) to load in the data and group it by location for 1. caching results and 2. managing the huge number of results
 
