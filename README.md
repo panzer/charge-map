@@ -26,6 +26,8 @@ In this repository, I set out to use the openchargemap.org API to show chargers 
 
 - The names "chargers" and "stationComms" are confusing. Instead use something like "chargeMap" and "stations"
 
+- Display more nicely when the charge request is pending and figure out why the API interaction is erroring
+
 - Add some testing and automate it. Especially the utility functions.
 
 - Add a login screen so that the app API key doesnt need to be hard coded. At the very least, make an env file to provide the API key
