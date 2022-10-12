@@ -1,5 +1,5 @@
 import { StyleSheet, Text, Pressable, SafeAreaView } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +9,8 @@ import {
   selectIsChargersLoading,
 } from "../redux/chargersReducer";
 
+import { requestCharge, selectIsStationLoading } from "../redux/stationComms";
+
 import { regionToBoundingBox } from "../utils/geographic";
 
 export default function App() {
@@ -17,6 +19,7 @@ export default function App() {
 
   const chargerLocations = useSelector(selectChargers);
   const isChargersLoading = useSelector(selectIsChargersLoading);
+  const isStationLoading = useSelector(selectIsStationLoading);
 
   useEffect(() => {
     if (region !== undefined) {
@@ -31,12 +34,23 @@ export default function App() {
         onRegionChangeComplete={(region) => setRegion(region)}
       >
         {chargerLocations &&
-          chargerLocations.map(({ uuid, lat, lon }) => (
+          chargerLocations.map(({ charger_id, uuid, lat, lon }) => (
             <Marker
               key={uuid}
               coordinate={{ latitude: lat, longitude: lon }}
               tracksViewChanges={false}
-            />
+            >
+              <Callout>
+                <Text>Station {charger_id}</Text>
+
+                <Pressable
+                  // TODO: Change the state of this button (ie disable it) when request is pending
+                  onPress={() => dispatch(requestCharge({ charger_id }))}
+                >
+                  <Text style={styles.button}>Start Charging</Text>
+                </Pressable>
+              </Callout>
+            </Marker>
           ))}
       </MapView>
       <Pressable
@@ -45,7 +59,16 @@ export default function App() {
       >
         <Text>Refresh</Text>
       </Pressable>
-      {isChargersLoading ? <Text>Loading...</Text> : <Text>Done Loading</Text>}
+      {isChargersLoading ? (
+        <Text>Loading Map...</Text>
+      ) : (
+        <Text>Done Loading Map</Text>
+      )}
+      {isStationLoading ? (
+        <Text>Connecting to charger...</Text>
+      ) : (
+        <Text>Done talking to charger</Text>
+      )}
     </SafeAreaView>
   );
 }

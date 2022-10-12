@@ -23,7 +23,8 @@ const chargersSlice = createSlice({
           // TODO: Instead of bulk replacing locations, locations should be some datastructure (R-Tree?)
           // that allows for lookups based on bounding box
           locations: data.map(
-            ({ UUID, AddressInfo: { Latitude, Longitude } }) => ({
+            ({ ID, UUID, AddressInfo: { Latitude, Longitude } }) => ({
+              charger_id: ID, // same as "ChargePointID"
               uuid: UUID,
               lat: Latitude,
               lon: Longitude,
