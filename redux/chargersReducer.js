@@ -58,6 +58,12 @@ export const { chargersPending, chargersSuccess, chargersFailure } = actions;
 export const fetchChargers = ({ lat1, lon1, lat2, lon2 }) => async (
   dispatch
 ) => {
+  // Rough idea for new approach:
+  // 1. Split the current view into NxM segments, for simplicity the first attempt will be 3x3
+  // 2. Query the openchargers API for each segment, with some arbitrary maximum results.
+  // 3. Two R-Trees will be used. First one used to check if current view has the maximum results possible. "isFilled"?
+  // 4. Second one actually holds the points (lat lon) of the chargers + any metadata needed for further functionality
+  // 5. When view is refreshed, consult isFilled r-tree to determine if more points lay in that area
   dispatch(chargersPending());
   getLocations({ lat1, lon1, lat2, lon2 })
     .then((response) => dispatch(chargersSuccess(response.data)))
